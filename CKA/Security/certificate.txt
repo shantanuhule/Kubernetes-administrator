@@ -1,0 +1,70 @@
+CA-
+generate key:(ca.key)
+openssl genrsa -out ca.key 2048
+(ca.key)
+
+certificate signing request:
+openssl req -new -key ca.key -subj "/CN=KUBERNETES-CA" -out ca.csr 
+(ca.csr)
+
+sign certificate:
+openssl x509 -req -in ca.csr -signkey ca.key -out ca.crt
+(ca.crt)
+
+
+__________________
+admin user
+
+generate key:
+openssl genrsa -out admin.key 2048
+
+certificate singing request:
+openssl req -new -key admin.key -subj "/CN=kube-admin/O=system:masters" -out admin.csr
+
+sign certificate:
+openssl x509 -req -in admin.csr -CA ca.crt -CAkey ca.key -out admin.crt
+
+
+__________
+to view details of a certificate:
+
+openssl x509 -in /etc/kubernetes/pki/apiserver.crt -text -nout
+
+
+
+
+_______________
+certificate api:
+
+openssl genrsa -out jane.key 2048
+(jane.key)
+
+openssl req -new -key jane.key -subj "/CN=jane" -out jane.csr
+(jane.csr)
+
+# create jane-csr.yaml file ( in its request put [cat jane.csr | base64 -w 0] output)
+
+kubectl get csr
+
+kubectl certificate approve jane
+
+
+_____________
+
+To use that context, run the command: kubectl config --kubeconfig=/root/my-kube-config use-context research
+
+To know the current context, run the command: kubectl config --kubeconfig=/root/my-kube-config current-context
+
+
+_______________
+Add the my-kube-config file to the KUBECONFIG environment variable.
+
+Open your shell configuration file:
+vi ~/.bashrc
+Add the following line to export the variable:
+export KUBECONFIG=/root/my-kube-config
+Apply the Changes:
+
+Reload the shell configuration to apply the changes in the current session:
+
+source ~/.bashrc

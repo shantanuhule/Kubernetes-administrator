@@ -1,0 +1,20 @@
+export ETCDCTL_API=3
+etcdctl snapshot save snapshot.db
+
+service kube-apiserver stop
+
+etcdctl snapshot restore snapshot.db --data-dir /var/lib/etcd-from-backup
+
+(change configuration in etcd service /etc/kubernetes/manifest/etcd.yaml)
+
+systemctl daemon-reload
+
+service etcd restart
+
+service kube-apiserver start
+
+______________________________
+
+
+(for multiple clusters use )
+kubectl config 

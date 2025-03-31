@@ -1,0 +1,39 @@
+ip link 
+
+ip addr
+
+ip addr add 192.168.1.10/24 dev eth0
+
+ip route
+
+ip route add 192.168.1.0/24 via 192.168.2.1
+
+cat /proc/sys/net/ipv4/ip_forward
+
+arp
+
+netstat -plnt
+
+__________________
+
+What is the network interface configured for cluster connectivity on the controlplane node?
+
+node-to-node communication
+=
+ip a | grep -B2 192.168.183.223
+_________________
+What is the MAC address of the interface on the controlplane node?
+ip link show eth0
+
+_____________
+for routes
+
+ip route
+___
+
+for active internet connect :
+
+netstat -nplt
+
+_____
+
